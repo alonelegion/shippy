@@ -53,4 +53,13 @@ func main() {
 		log.Fatalf("Cloud not greet: %v", err)
 	}
 	log.Printf("Created: %t", r.Created)
+
+	getAll, err := client.GetConsignment(context.Background(), &pb.GetRequest{})
+	if err != nil {
+		log.Fatalf("Cloud not list consignments: %v", err)
+	}
+
+	for _, v := range getAll.Consignments {
+		log.Println(v)
+	}
 }

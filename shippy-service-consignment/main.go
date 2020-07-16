@@ -43,6 +43,11 @@ type service struct {
 	repo repository
 }
 
+func (s *service) GetConsignment(ctx context.Context, req *pb.GetRequest) (*pb.Response, error) {
+	consignments := s.repo.GetAll()
+	return &pb.Response{Consignments: consignments}, nil
+}
+
 func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment) (*pb.Response, error) {
 
 	// Save our consignment
