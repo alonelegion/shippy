@@ -6,6 +6,7 @@ package consignment
 import (
 	context "context"
 	fmt "fmt"
+	grpc2 "github.com/alonelegion/grpc-go"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -257,7 +258,7 @@ type shippingServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewShippingServiceClient(cc grpc.ClientConnInterface) ShippingServiceClient {
+func NewShippingServiceClient(cc *grpc.ClientConn) ShippingServiceClient {
 	return &shippingServiceClient{cc}
 }
 

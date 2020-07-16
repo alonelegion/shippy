@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	pb "github.com/alonelegion/shippy/shippy-service-consignment/proto/consignment"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 	"sync"
+
+	pb "github.com/alonelegion/shippy/shippy-service-consignment/proto/consignment"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -17,6 +17,7 @@ const (
 // интерфейс хранилища
 type repository interface {
 	Create(*pb.Consignment) (*pb.Consignment, error)
+	GetAll() []*pb.Consignment
 }
 
 // структура для имитации хранилища
@@ -32,6 +33,10 @@ func (repo *Repository) Create(consignment *pb.Consignment) (*pb.Consignment, er
 	repo.consignments = updated
 	repo.mu.Unlock()
 	return consignment, nil
+}
+
+func (repo *Repository) GetAll() []*pb.Consignment {
+	return repo.consignments
 }
 
 type service struct {
@@ -60,8 +65,6 @@ func main() {
 	s := grpc.NewServer()
 
 	pb.RegisterShippingServiceServer(s, &service{repo})
-
-	reflection.Register(s)
 
 	log.Println("Running on port:", port)
 	if err := s.Serve(lis); err != nil {
