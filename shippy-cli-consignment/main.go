@@ -9,11 +9,10 @@ import (
 	"context"
 
 	pb "github.com/alonelegion/shippy/shippy-service-consignment/proto/consignment"
-	micro "github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2"
 )
 
 const (
-	address         = "localhost:50051"
 	defaultFilename = "consignment.json"
 )
 
@@ -28,10 +27,10 @@ func parseFile(file string) (*pb.Consignment, error) {
 }
 
 func main() {
-	service := micro.NewService(micro.Name("shippy.consignment.cli"))
+	service := micro.NewService(micro.Name("shippy.cli.consignment"))
 	service.Init()
 
-	client := pb.NewShippingService("shippy.consignment.service", service.Client())
+	client := pb.NewShippingService("shippy.service.consignment", service.Client())
 
 	// Подключение к серверу и вывод на экран сообщения
 	file := defaultFilename
